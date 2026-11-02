@@ -195,6 +195,9 @@ h2.ih{display:flex;align-items:center;gap:12px}
 .plan .tags{margin-top:4px}
 .areasbox{margin-top:28px}.areas-t{display:flex;align-items:center;gap:8px;margin-bottom:12px}.areas-t .ic{width:20px;height:20px;color:var(--verde-txt)}.areasbox .tags{margin-top:0}.areasbox .tag{background:var(--caja)}
 
+/* teléfono: menos aire entre el menú y la pregunta */
+#result{scroll-margin-top:16px;scroll-margin-bottom:88px}
+@media(max-width:720px){.wrap{gap:48px}.top{margin-bottom:-14px}}
 /* vistas + subir */
 .view-off{display:none!important}
 .view-in{animation:viewIn 200ms var(--ease-out)}
@@ -500,7 +503,7 @@ const DATA_EN = {
      items:[`Diagnosis and goal setting.`,`Personalized strategic guidance.`,`Review of progress and difficulties.`,`Recommendations and next steps.`],
      ideal:`Professionals and entrepreneurs who need strategic guidance to move forward on a specific situation or challenge.`,
      note:`Session frequency is set according to the needs and goals of the process, in coordination with you.`},
-    {name:`Intensive Mentorship`, icon:'i-spark', meta:[['i-sessions',`6 one-on-one sessions`]], price:'$900', intro:`A deeper working process to develop a strategy, address different areas of the brand or business and support its implementation.`,
+    {name:`Intensive Mentorship`, icon:'i-spark', meta:[['i-sessions',`8 one-on-one sessions`]], price:'$900', intro:`A deeper working process to develop a strategy, address different areas of the brand or business and support its implementation.`,
      items:[`Strategic diagnosis and goal setting.`,`Development of personalized strategies.`,`Review of implementation and progress.`,`Guidance for decision-making.`],
      ideal:`Personal brands and businesses that need to work on a strategic goal with greater depth and continuity.`},
     {name:`Semester-Long Support`, icon:'i-sessions', meta:[['i-sessions',`18 sessions`],['i-clock',`60 minutes each`],['i-calendar',`6 months`]], price:'$1,600', intro:`A strategic support process to work on the evolution of a personal brand or business, review its development and make decisions with continuity.`,
@@ -560,6 +563,11 @@ function bindChips(){
   });
 }
 let swapTok = 0;
+/* en el teléfono la recomendación queda debajo de las opciones: bajar lo justo para que se vea completa */
+function revealResult(){
+  const r = $('#result'), b = r.getBoundingClientRect();
+  if (b.bottom > innerHeight - 88 || b.top < 56) r.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'nearest'});
+}
 const resultHTML = s => '<div class="result"><div class="rtitle"><span class="badge">'+ic(s.ric)+'</span><h3>'+esc(s.t)+'</h3></div>' + (s.price?'<span class="price">'+esc(s.price)+'</span>':'') +
   '<p>'+esc(s.p)+'</p><div class="row"><a class="btn" target="_blank" rel="noopener" href="'+wa(s.msg)+'">'+ic('i-chat')+T('btn.wa')+'</a>' +
   
@@ -575,7 +583,7 @@ function pick(i, first){
   const old = box.firstElementChild; if (old) old.classList.add('out');
   setTimeout(() => { if (tok !== swapTok) return;
     box.innerHTML = resultHTML(s); const n = box.firstElementChild;
-    n.classList.add('out'); void n.offsetWidth; n.classList.remove('out'); }, 120);
+    n.classList.add('out'); void n.offsetWidth; n.classList.remove('out'); requestAnimationFrame(revealResult); }, 120);
 }
 
 /* ---------- planes: consultoría, mentoría, identidad de marca ---------- */
@@ -615,7 +623,7 @@ const DATA_ES = {
      items:['Diagnóstico y definición de objetivos.','Orientación estratégica personalizada.','Revisión de avances y dificultades.','Recomendaciones y próximos pasos.'],
      ideal:'Profesionales y emprendedores que necesitan orientación estratégica para avanzar en una situación o desafío específico.',
      note:'La frecuencia de las sesiones se establece según las necesidades y los objetivos del proceso, en coordinación contigo.'},
-    {name:'Mentoría Intensiva', icon:'i-spark', meta:[['i-sessions','6 sesiones individuales']], price:'$900', intro:'Un proceso de trabajo más profundo para desarrollar una estrategia, abordar diferentes áreas de la marca o negocio y acompañar su implementación.',
+    {name:'Mentoría Intensiva', icon:'i-spark', meta:[['i-sessions','8 sesiones individuales']], price:'$900', intro:'Un proceso de trabajo más profundo para desarrollar una estrategia, abordar diferentes áreas de la marca o negocio y acompañar su implementación.',
      items:['Diagnóstico estratégico y definición de objetivos.','Desarrollo de estrategias personalizadas.','Revisión de implementación y avances.','Orientación para la toma de decisiones.'],
      ideal:'Marcas personales y negocios que necesitan trabajar un objetivo estratégico con mayor profundidad y continuidad.'},
     {name:'Acompañamiento Semestral', icon:'i-sessions', meta:[['i-sessions','18 sesiones'],['i-clock','60 minutos cada una'],['i-calendar','6 meses']], price:'$1,600', intro:'Un proceso de acompañamiento estratégico para trabajar la evolución de una marca personal o negocio, revisar su desarrollo y tomar decisiones con continuidad.',
